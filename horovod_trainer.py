@@ -17,7 +17,7 @@ from settings import logger, formatter
 
 def parse_timestamp(time_str):
     year, month, day, hour, minute, second = [int(elem) for elem in time_str.split("_")]
-    return datetime.datetime(year, month, day, hour, minute, second, 0) + datetime.timedelta(seconds=15)
+    return datetime.datetime(year, month, day, hour, minute, second, 0) + datetime.timedelta(seconds=20)
 
 def ssgd_with_horovod(job, mode, start_dt):
 

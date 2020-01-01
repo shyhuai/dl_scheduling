@@ -10,7 +10,7 @@
     "nworkers":2,
     "cuda_enabled":1,
     "nsteps_update":1,
-    "iters":3,
+    "iters":100,
     "fw_time":10,
     "bw_time":15
 }

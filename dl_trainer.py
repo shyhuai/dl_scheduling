@@ -247,68 +247,6 @@ class DLTrainer:
         self.indexes = {}
         self.recv_indexes = []
     
-    # the tensor has been flatten, the tensor here is the gradient
-    def compress(self, model, name=None, sigma_scale=2.5, ratio=0.05):
-        start = time.time()
-        with torch.no_grad():
-            #if name not in self.residuals:
-            #    self.residuals[name] = torch.zeros_like(gradient.data)
-            # add the saved residuals to gradients
-            #gradient.add_(self.residuals[name].data)
-
-            # top-k solution
-            numel = self.residuals.numel()
-            k = int(numel * ratio)
-            #print("compress the origin gradients:", self.residuals.norm())
-            #print("n:%d, k:%d, r:%d" % (numel, k, ratio))
-            values, indexes = torch.topk(torch.abs(self.residuals), k=k)
-            #values, indexes = torch.topk(torch.abs(self.residuals), k=numel) # test for the whole model
-            #print("select the gradients:", values.norm())
-            #values = gradient[indexes]
-            #if name not in self.zero_condition:
-            #    self.zero_condition[name] = torch.ones(numel, dtype=torch.float32, device=gradient.device) 
-            if len(self.zero_condition) == 0:
-                self.zero_condition = torch.ones(numel, dtype=torch.float32, device=model.device)
-
-            indexes = indexes.to(torch.long)
-            self.zero_condition.fill_(1.0)
-            self.zero_condition[indexes] = 0.0
-
-            self.residuals.data.fill_(0.)
-            # substract those weight changes that have been selected this time
-            self.residuals.data = self.residuals.data * self.zero_condition
-            #tensor.sub_(self.residuals[name].data)
-
-            values = model[indexes]
-            #self.indexes_marked[indexes] = 1.0
-            #logger.info("Marked is %d/%d.", self.indexes_marked.sum(), self.model_size)
-            self.values[name] = values
-            self.indexes[name] = indexes
-            #print("compressed model and result:", indexes[:5], model.norm(), values.norm())
-            #logger.info('residuals before: %f', torch.norm(TopKCompressor.residuals[name].data))
-            #return values, indexes
-            #print("compressed model norm:", model.norm())
-	    return values, indexes 
-
-    def get_residuals(self, name, like_tensor):
-        if name not in TopKCompressor.residuals:
-            TopKCompressor.residuals[name] = torch.zeros_like(like_tensor.data)
-        return TopKCompressor.residuals[name]
-
-    def add_residuals(self, included_indexes, name):
-        with torch.no_grad():
-            residuals = TopKCompressor.residuals[name]
-            indexes_t = torch.from_numpy(included_indexes).cuda(residuals.device).long()
-            values = TopKCompressor.values[name]
-            values[indexes_t] = 0.0
-            residuals.data[TopKCompressor.indexes[name]] += values.data
-            #logger.info('residuals after: %f', torch.norm(TopKCompressor.residuals[name].data))
-
-    def decompress(self, tensor, ctc, name=None):
-        z = tensor 
-        return z 
-
-
     def get_acc(self):
         return self.accuracy
 
@@ -973,7 +911,7 @@ class DLTrainer:
         self.num_of_updates_during_comm += 1
         self.loss /= num_of_iters 
         self.timer += time.time() - self.s
-        display = 100
+        display = 1
         if self.train_iter % display == 0:
             logger.info('[%3d][%5d/%5d][rank:%d] loss: %.3f, average forward and backward time: %f, iotime: %f ' %
                   (self.train_epoch, self.train_iter, self.num_batches_per_epoch, self.rank,  self.loss, self.timer/display, self.iotime/display))
@@ -1595,8 +1533,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Single trainer")
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--nsteps-update', type=int, default=1)
-    parser.add_argument('--dataset', type=str, default='imagenet', choices=['imagenet', 'cifar10', 'an4', 'ptb'], help='Specify the dataset for training')
-    parser.add_argument('--dnn', type=str, default='resnet50', choices=['resnet50', 'resnet20', 'vgg19', 'vgg16', 'alexnet', 'lstman4', 'lstm'], help='Specify the neural network for training')
+    parser.add_argument('--dataset', type=str, default='cifar10', choices=['imagenet', 'cifar10', 'an4', 'ptb'], help='Specify the dataset for training')
+    parser.add_argument('--dnn', type=str, default='resnet20', choices=['resnet50', 'resnet20', 'vgg19', 'vgg16', 'alexnet', 'lstman4', 'lstm'], help='Specify the neural network for training')
     parser.add_argument('--data-dir', type=str, default='./data', help='Specify the data root path')
     parser.add_argument('--lr', type=float, default=0.1, help='Default learning rate')
     parser.add_argument('--max-epochs', type=int, default=settings.MAX_EPOCHS, help='Default maximum epochs to train')

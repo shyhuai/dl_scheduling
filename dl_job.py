@@ -52,13 +52,22 @@ class DLJob:
         self.schedule = self.job_json['schedule']
 
     def get_forward_schedule(self, rank, iter_num):
-        return self.schedule['rank_%d' % rank]['forward'][iter_num]
+        l = self.schedule['rank_%d' % rank]['forward']
+        if iter_num >= len(l):
+            return 0
+        return l[iter_num]
 
     def get_backward_schedule(self, rank, iter_num):
-        return self.schedule['rank_%d' % rank]['backward'][iter_num]
+        l = self.schedule['rank_%d' % rank]['backward']
+        if iter_num >= len(l):
+            return 0
+        return l[iter_num]
 
     def get_communication_schedule(self, rank, iter_num):
-        return self.schedule['rank_%d' % rank]['comm'][iter_num]
+        l = self.schedule['rank_%d' % rank]['comm']
+        if iter_num >= len(l):
+            return 0
+        return l[iter_num]
 
     def get_device(self, rank):
         return self.device_ids[rank]
