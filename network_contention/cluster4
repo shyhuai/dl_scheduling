@@ -1,4 +1,4 @@
-host25 slots=1
-host27 slots=1
-host28 slots=1
-host29 slots=1
+gpu9 slots=1
+gpu10 slots=1
+gpu11 slots=1
+gpu12 slots=1
