@@ -1,3 +1,4 @@
+#!/bin/bash
 size="${size:-65536}"
 iter="${iter:-1000}"
 #PY=/home/comp/qiangwang/anaconda2/bin/python

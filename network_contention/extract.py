@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import glob
 import itertools
 import numpy as np
@@ -28,7 +28,7 @@ def parse_log(log_root):
  
     dfs = []
     for log in filelist:
-        print log
+        print(log)
         with open(log, 'r') as f:
             content = f.readlines()[4:]
             content = [line.split() for line in content]
@@ -52,13 +52,14 @@ def parse_log(log_root):
 
             dfs.append(df)
 
+    print('dfs: ', dfs)
     #start_frame = start_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[len(start_frame) - 1]
     #end_frame = end_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[0]
     start_frame = start_frame.sort_values(by=['Datetime']).reset_index(drop=True)
     end_frame = end_frame.sort_values(by=['Datetime']).reset_index(drop=True)
 
-    print start_frame
-    print end_frame
+    print(start_frame)
+    print(end_frame)
 
     start_frame = start_frame.loc[len(start_frame) - 1]
     end_frame = end_frame.loc[0]
@@ -66,9 +67,10 @@ def parse_log(log_root):
     latencies = []
     for df in dfs:
         #print len(df)
-        data = df[(df['Datetime'] >= start_frame.Datetime) & (df['Datetime'] <= end_frame.Datetime)]
+        #data = df[(df['Datetime'] >= start_frame.Datetime) & (df['Datetime'] <= end_frame.Datetime)]
+        data = df #df[(df['Datetime'] >= start_frame.Datetime) & (df['Datetime'] <= end_frame.Datetime)]
 
-        print len(data)
+        print(len(data))
         #latencies.extend(list(data.Latency))
         latencies.append(np.mean(list(data.Latency)[100:-100]))
     
@@ -86,7 +88,7 @@ def main():
         #job_nums = [16]
         #msg_sizes = [65536]
 
-        fig, ax = plt.subplots(figsize = (12, 8))
+        #fig, ax = plt.subplots(figsize = (12, 8))
         for msg_size in msg_sizes:
             
             throughput = []
