@@ -47,10 +47,25 @@
 #job_num=32 size=65536     sh multiple_osu.sh
 #job_num=32 size=262144    sh multiple_osu.sh
 #
-job_num=3 size=209715200 iter=100 ./multiple_nccl.sh
-job_num=4 size=209715200 iter=100 ./multiple_nccl.sh
-job_num=3 size=104857600 iter=100 ./multiple_nccl.sh
-job_num=8 size=104857600 iter=100 ./multiple_nccl.sh
-job_num=16 size=104857600 iter=100 ./multiple_nccl.sh
-job_num=32 size=104857600 iter=100 ./multiple_nccl.sh
-job_num=64 size=104857600 iter=100 ./multiple_nccl.sh
+#job_num=3 size=209715200 iter=100 ./multiple_nccl.sh
+#job_num=4 size=209715200 iter=100 ./multiple_nccl.sh
+#job_num=3 size=104857600 iter=100 ./multiple_nccl.sh
+#job_num=8 size=104857600 iter=100 ./multiple_nccl.sh
+#job_num=16 size=104857600 iter=100 ./multiple_nccl.sh
+#job_num=32 size=104857600 iter=100 ./multiple_nccl.sh
+#job_num=64 size=104857600 iter=100 ./multiple_nccl.sh
+
+#nworkers=2 job_num=2 size=104857600 iter=100 ./multiple_nccl.sh
+#nworkers=8 job_num=1 size=104857600 iter=100 ./multiple_nccl.sh
+#nworkers=8 job_num=2 size=104857600 iter=100 ./multiple_nccl.sh
+#nworkers=8 job_num=4 size=104857600 iter=100 ./multiple_nccl.sh
+#nworkers=8 job_num=8 size=104857600 iter=100 ./multiple_nccl.sh
+ns=( "2" "4" "8" )
+js=( "1" "2" "3" "4" "5" "6" "7" "8" )
+for nworkers in "${ns[@]}"
+do
+    for job_num in "${js[@]}"
+    do
+        nworkers=$nworkers job_num=$job_num size=104857600 iter=100 ./multiple_nccl.sh
+    done
+done

@@ -1,4 +1,4 @@
-gpu9 slots=1
-gpu10 slots=1
-gpu11 slots=1
-gpu12 slots=1
+ethgpu9 slots=1
+ethgpu10 slots=1
+ethgpu11 slots=1
+ethgpu12 slots=1
