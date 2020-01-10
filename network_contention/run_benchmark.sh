@@ -60,12 +60,24 @@
 #nworkers=8 job_num=2 size=104857600 iter=100 ./multiple_nccl.sh
 #nworkers=8 job_num=4 size=104857600 iter=100 ./multiple_nccl.sh
 #nworkers=8 job_num=8 size=104857600 iter=100 ./multiple_nccl.sh
-ns=( "2" "4" "8" )
+#size=52428800
+size=104857600
+ns=( "9" "10" "11" "12" "13" "14" "15" "16" )
+#ns=( "4" "8" )
 js=( "1" "2" "3" "4" "5" "6" "7" "8" )
 for nworkers in "${ns[@]}"
 do
     for job_num in "${js[@]}"
     do
-        nworkers=$nworkers job_num=$job_num size=104857600 iter=100 ./multiple_nccl.sh
+        #csize=$(expr $size "*" $nworkers )
+        csize=$size
+        echo $csize
+        nworkers=$nworkers job_num=$job_num size=$csize iter=20 ./multiple_nccl.sh
     done
 done
+#nworkers=2
+#iter=20 nworkers=$nworkers ./nccl_mpi.sh>logs/nccl_lg_nw$nworkers.log
+#nworkers=4
+#iter=20 nworkers=$nworkers ./nccl_mpi.sh>logs/nccl_lg_nw$nworkers.log
+#nworkers=8
+#iter=20 nworkers=$nworkers ./nccl_mpi.sh>logs/nccl_lg_nw$nworkers.log
