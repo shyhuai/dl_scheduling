@@ -77,8 +77,8 @@ def parse_log(log_root):
         #latencies.extend(list(data.Latency))
         latency = list(data.Latency)
         latency.sort()
-        #latencies.append(np.mean(latency))
-        latencies.append(np.mean(latency[-10:]))
+        latencies.append(np.mean(latency))
+        #latencies.append(np.mean(latency[-10:]))
         #latencies.append(latency[-1])
     
     #latencies.sort()
@@ -90,7 +90,7 @@ def main():
     with open("results.csv", "w") as f:
 
         f.write("node_num,job_num,msg_size,avg_latency\n")
-        job_nums = [2, 3, 4, 5, 6, 7, 8]
+        job_nums = [1, 2, 3, 4, 5, 6, 7, 8]
         #msg_sizes = [256, 1024, 4096, 16384, 65536, 262144]
         msg_sizes = [104857600]
         nodes = [2,3,4,5,6,7,8]

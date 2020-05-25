@@ -11,5 +11,5 @@ $MPIPATH/bin/mpirun --prefix $MPIPATH -np $nnodes -hostfile $hostfile -bind-to n
         -mca pml ob1 -mca btl ^openib \
         -mca coll_tuned_use_dynamic_rules 1 -mca coll_tuned_allreduce_algorithm 4 \
         -mca btl_tcp_if_include 192.168.0.1/24 \
-        ./osu_allreduce -m 65536:1048576 -i $iter
-        #./osu_allreduce -m $size:$size -i $iter
+        ./osu_allreduce -m $size:$size -i $iter
+        #./osu_allreduce -m 524288:134217728 -i $iter
