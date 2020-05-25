@@ -32,6 +32,8 @@ def parse_log(log_root):
         print(log)
         with open(log, 'r') as f:
             content = f.readlines()[4:]
+            content = [line for line in content if not ("failed" in line)]
+            content = content[2:]
             content = [line.split() for line in content]
             #df = pd.DataFrame({'Date':[elem[0] for elem in content], \
             #                   'Time':[elem[1] for elem in content], \
@@ -53,7 +55,7 @@ def parse_log(log_root):
 
             dfs.append(df)
 
-    #print('dfs: ', dfs)
+    print('dfs: ', dfs)
     #start_frame = start_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[len(start_frame) - 1]
     #end_frame = end_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[0]
     start_frame = start_frame.sort_values(by=['Datetime']).reset_index(drop=True)
