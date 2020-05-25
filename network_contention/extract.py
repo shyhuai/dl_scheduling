@@ -12,6 +12,7 @@ coloriter = itertools.cycle(colors)
 
 def parse_log(log_root):
 
+    print(log_root)
     filelist = glob.glob(r'%s/*.log' % log_root)
     #start_frame = pd.DataFrame({'Date':[], \
     #                           'Time':[], \
@@ -52,14 +53,14 @@ def parse_log(log_root):
 
             dfs.append(df)
 
-    print('dfs: ', dfs)
+    #print('dfs: ', dfs)
     #start_frame = start_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[len(start_frame) - 1]
     #end_frame = end_frame.sort_values(by=['Date', 'Time', 'Microsecond']).loc[0]
     start_frame = start_frame.sort_values(by=['Datetime']).reset_index(drop=True)
     end_frame = end_frame.sort_values(by=['Datetime']).reset_index(drop=True)
 
-    print(start_frame)
-    print(end_frame)
+    #print(start_frame)
+    #print(end_frame)
 
     start_frame = start_frame.loc[len(start_frame) - 1]
     end_frame = end_frame.loc[0]
@@ -72,30 +73,36 @@ def parse_log(log_root):
 
         print(len(data))
         #latencies.extend(list(data.Latency))
-        latencies.append(np.mean(list(data.Latency)[100:-100]))
+        latency = list(data.Latency)
+        latency.sort()
+        #latencies.append(np.mean(latency))
+        latencies.append(np.mean(latency[-10:]))
+        #latencies.append(latency[-1])
     
     #latencies.sort()
-    return np.mean(latencies)
     #return latencies[-1]
+    return np.mean(latencies)
 
 def main():
 
     with open("results.csv", "w") as f:
 
-        f.write("job_num,msg_size,avg_latency\n")
-        job_nums = [1, 2, 4, 8, 16]
-        msg_sizes = [256, 1024, 4096, 16384, 65536, 262144]
+        f.write("node_num,job_num,msg_size,avg_latency\n")
+        job_nums = [2, 3, 4, 5, 6, 7, 8]
+        #msg_sizes = [256, 1024, 4096, 16384, 65536, 262144]
+        msg_sizes = [104857600]
+        nodes = [2,3,4]
         #job_nums = [16]
-        #msg_sizes = [65536]
 
         #fig, ax = plt.subplots(figsize = (12, 8))
         for msg_size in msg_sizes:
             
             throughput = []
-            for job_num in job_nums:
-                #latency.append(parse_log("logs/job_n%d_s%d" % (job_num, msg_size)))
-                #throughput.append(sum([msg_size / l for l in parse_log("logs/job_n%d_s%d" % (job_num, msg_size))]))
-                f.write("%d,%d,%f\n" % (job_num, msg_size, parse_log("logs/job_n%d_s%d" % (job_num, msg_size))))
+            for n in nodes:
+                for job_num in job_nums:
+                    #latency.append(parse_log("logs/job_n%d_s%d" % (job_num, msg_size)))
+                    #throughput.append(sum([msg_size / l for l in parse_log("logs/job_n%d_s%d" % (job_num, msg_size))]))
+                    f.write("%d,%d,%d,%f\n" % (n, job_num, msg_size, parse_log("logs/v2_job_nnodes%d_n%d_s%d" % (n, job_num, msg_size))))
 
 
 if __name__ == '__main__':
