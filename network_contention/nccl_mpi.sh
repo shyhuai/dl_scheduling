@@ -15,6 +15,6 @@ $MPIPATH/bin/mpirun --oversubscribe --prefix $MPIPATH -np $nworkers --hostfile c
     -x NCCL_DEBUG=INFO \
     -x NCCL_IB_DISABLE=1 \
     -x CUDA_VISIBLE_DEVICES=$gpuid \
-    $ALLREDUCE_BIN -b $size -e $size -i 10485760 -g 1 -c 0  -n $iter -z 1
-     #$ALLREDUCE_BIN -b 10485760 -e 419430400 -i 10485760 -g 1 -c 0 -n $iter -z 1
+     $ALLREDUCE_BIN -b 10485760 -e 419430400 -i 10485760 -g 1 -c 0 -n $iter -z 1
+    #$ALLREDUCE_BIN -b $size -e $size -i 10485760 -g 1 -c 0  -n $iter -z 1
     #-x NCCL_SOCKET_IFNAME=$SOCKET_IFNAME \
