@@ -91,7 +91,7 @@ def main():
         job_nums = [2, 3, 4, 5, 6, 7, 8]
         #msg_sizes = [256, 1024, 4096, 16384, 65536, 262144]
         msg_sizes = [104857600]
-        nodes = [2,3,4]
+        nodes = [2,3,4,5,6,7,8]
         #job_nums = [16]
 
         #fig, ax = plt.subplots(figsize = (12, 8))
