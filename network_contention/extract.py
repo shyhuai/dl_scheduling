@@ -77,8 +77,8 @@ def parse_log(log_root):
         #latencies.extend(list(data.Latency))
         latency = list(data.Latency)
         latency.sort()
-        latencies.append(np.mean(latency))
-        #latencies.append(np.mean(latency[-10:]))
+        #latencies.append(np.mean(latency))
+        latencies.append(np.mean(latency[-10:]))
         #latencies.append(latency[-1])
     
     #latencies.sort()
